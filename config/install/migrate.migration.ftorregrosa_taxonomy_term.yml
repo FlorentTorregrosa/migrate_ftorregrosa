@@ -1,0 +1,32 @@
+id: ftorregrosa_taxonomy_term
+label: ftorregrosa taxonomy terms
+dependencies:
+  enforced:
+    module:
+      - migrate_ftorregrosa
+migration_groups:
+  - ftorregrosa
+source:
+  plugin: ftorregrosa_taxonomy_term
+destination:
+  plugin: entity:taxonomy_term
+migration_dependencies:
+  required:
+    - ftorregrosa_taxonomy_vocabulary
+process:
+  tid: tid
+  vid:
+    plugin: migration
+    migration: ftorregrosa_taxonomy_vocabulary
+    source: vid
+  name: name
+  description: description
+  weight: weight
+  parent:
+    -
+      plugin: skip_process_on_empty
+      source: parent
+    -
+      plugin: migration
+      migration: ftorregrosa_taxonomy_term
+  changed: timestamp

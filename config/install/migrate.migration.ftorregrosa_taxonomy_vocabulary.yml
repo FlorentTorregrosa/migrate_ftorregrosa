@@ -1,0 +1,28 @@
+id: ftorregrosa_taxonomy_vocabulary
+label: ftorregrosa taxonomy vocabularies
+dependencies:
+  enforced:
+    module:
+      - migrate_ftorregrosa
+migration_groups:
+  - ftorregrosa
+source:
+  plugin: ftorregrosa_taxonomy_vocabulary
+destination:
+  plugin: entity:taxonomy_vocabulary
+process:
+  vid:
+    -
+      plugin: machine_name
+      source: machine_name
+    -
+      plugin: dedupe_entity
+      entity_type: taxonomy_vocabulary
+      field: vid
+      length: 32
+  label: name
+  name: name
+  description: description
+  hierarchy: hierarchy
+  module: module
+  weight: weight

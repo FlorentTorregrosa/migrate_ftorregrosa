@@ -1,0 +1,8 @@
+name: Migrate ftorregrosa
+description: Custom migration module for migrating data from ftorregrosa.
+package: Migration
+type: module
+core: 8.x
+dependencies:
+  - migrate
+  - migrate_drupal
