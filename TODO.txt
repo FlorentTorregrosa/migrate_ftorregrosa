@@ -1,0 +1,15 @@
+Content types:
+ - Article:
+  - Fix body
+  - Fix tags
+  - Fix image
+  - Fix destination id
+ - Page
+ - Website
+ - Book
+Commentaries
+Contributed files
+User:
+ - Cas username
+ - Password
+Url aliases

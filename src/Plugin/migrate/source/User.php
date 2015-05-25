@@ -13,8 +13,6 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 /**
  * Extract users from ftorregrosa database.
  *
- * @todo: support cas username.
- *
  * @MigrateSource(
  *   id = "ftorregrosa_user"
  * )
