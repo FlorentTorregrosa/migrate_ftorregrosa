@@ -1,7 +1,6 @@
 Content types:
  - Article:
   - Fix image
-  - Fix destination id
  - Page
  - Website
  - Book

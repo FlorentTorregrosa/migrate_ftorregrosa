@@ -14,7 +14,7 @@ migration_dependencies:
   required:
     - ftorregrosa_taxonomy_vocabulary
 process:
-  tid: tid
+#  tid: tid
   vid:
     plugin: migration
     migration: ftorregrosa_taxonomy_vocabulary

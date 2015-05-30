@@ -16,7 +16,7 @@ migration_dependencies:
   required:
     - ftorregrosa_taxonomy_term
 process:
-  nid: nid
+#  nid: nid
   vid: vid
   type: type
   langcode:
