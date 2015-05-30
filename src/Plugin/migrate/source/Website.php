@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\migrate_ftorregrosa\Plugin\migrate\source\Article.
+ * Contains \Drupal\migrate_ftorregrosa\Plugin\migrate\source\Website.
  */
 
 namespace Drupal\migrate_ftorregrosa\Plugin\migrate\source;
@@ -12,13 +12,13 @@ use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 
 /**
- * ftorregrosa article node source plugin.
+ * ftorregrosa website node source plugin.
  *
  * @MigrateSource(
- *   id = "ftorregrosa_article"
+ *   id = "ftorregrosa_website"
  * )
  */
-class Article extends DrupalSqlBase implements SourceEntityInterface {
+class Website extends DrupalSqlBase implements SourceEntityInterface {
 
   /**
    * {@inheritdoc}
@@ -26,7 +26,7 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
   public function query() {
     // This queries the built-in metadata, but not the body, tags, or images.
     $query = $this->select('node', 'n')
-      ->condition('n.type', 'article')
+      ->condition('n.type', 'website')
       ->fields('n', array(
         'nid',
         'vid',
@@ -82,28 +82,48 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
     // all values into one row.)
     $result = $this->getDatabase()->query('
       SELECT
-        GROUP_CONCAT(fld.field_tags_tid) as tids
+        GROUP_CONCAT(fld.field_website_type_tid) as tids
       FROM
-        {field_data_field_tags} fld
+        {field_data_field_website_type} fld
       WHERE
         fld.entity_id = :nid
     ', array(':nid' => $nid));
     foreach ($result as $record) {
       if (!is_null($record->tids)) {
-        $row->setSourceProperty('tags', explode(',', $record->tids));
+        $row->setSourceProperty('field_website_type', explode(',', $record->tids));
       }
     }
+
+    // Taxonomy term IDs (here we use MySQL's GROUP_CONCAT() function to merge
+    // all values into one row.)
+    $result = $this->getDatabase()->query('
+      SELECT
+        GROUP_CONCAT(fld.field_website_technology_tid) as tids
+      FROM
+        {field_data_field_website_technology} fld
+      WHERE
+        fld.entity_id = :nid
+    ', array(':nid' => $nid));
+    foreach ($result as $record) {
+      if (!is_null($record->tids)) {
+        $row->setSourceProperty('field_website_technology', explode(',', $record->tids));
+      }
+    }
+
+//    field_website_link
+
+//    field_website_dev_date
 
     // Images.
     $result = $this->getDatabase()->query('
       SELECT
-        fld.field_image_fid,
-        fld.field_image_alt,
-        fld.field_image_title,
-        fld.field_image_width,
-        fld.field_image_height
+        fld.field_website_image_fid,
+        fld.field_website_image_alt,
+        fld.field_website_image_title,
+        fld.field_website_image_width,
+        fld.field_website_image_height
       FROM
-        {field_data_field_image} fld
+        {field_data_field_website_image} fld
       WHERE
         fld.entity_id = :nid
     ', array(':nid' => $nid));
@@ -119,7 +139,7 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
         'height'    => $record->field_image_height,
       ];
     }
-    $row->setSourceProperty('images', $images);
+    $row->setSourceProperty('field_website_image', $images);
 
     return parent::prepareRow($row);
   }

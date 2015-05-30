@@ -1,0 +1,46 @@
+id: ftorregrosa_page
+label: ftorregrosa page nodes
+dependencies:
+  enforced:
+    module:
+      - migrate_ftorregrosa
+migration_groups:
+  - ftorregrosa
+source:
+  plugin: ftorregrosa_page
+destination:
+  plugin: entity:node
+  type: page
+  bundle: page
+process:
+#  nid: nid
+  vid: vid
+  type: type
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  title: title
+  uid:
+    -
+      plugin: migration
+      migration: ftorregrosa_user
+      source: uid
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  'body/value': body_value
+  'body/summary': body_summary
+  'body/format':
+    plugin: static_map
+    bypass: true
+    source: body_format
+    map:
+      1: plain_text
+      2: restricted_html
+      3: full_html
+      4: full_html

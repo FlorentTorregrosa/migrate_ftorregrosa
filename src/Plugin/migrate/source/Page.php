@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\migrate_ftorregrosa\Plugin\migrate\source\Article.
+ * Contains \Drupal\migrate_ftorregrosa\Plugin\migrate\source\Page.
  */
 
 namespace Drupal\migrate_ftorregrosa\Plugin\migrate\source;
@@ -12,13 +12,13 @@ use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 
 /**
- * ftorregrosa article node source plugin.
+ * ftorregrosa page node source plugin.
  *
  * @MigrateSource(
- *   id = "ftorregrosa_article"
+ *   id = "ftorregrosa_page"
  * )
  */
-class Article extends DrupalSqlBase implements SourceEntityInterface {
+class Page extends DrupalSqlBase implements SourceEntityInterface {
 
   /**
    * {@inheritdoc}
@@ -26,7 +26,7 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
   public function query() {
     // This queries the built-in metadata, but not the body, tags, or images.
     $query = $this->select('node', 'n')
-      ->condition('n.type', 'article')
+      ->condition('n.type', 'page')
       ->fields('n', array(
         'nid',
         'vid',
@@ -77,49 +77,6 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
       $row->setSourceProperty('body_summary', $record->body_summary);
       $row->setSourceProperty('body_format', $record->body_format);
     }
-
-    // Taxonomy term IDs (here we use MySQL's GROUP_CONCAT() function to merge
-    // all values into one row.)
-    $result = $this->getDatabase()->query('
-      SELECT
-        GROUP_CONCAT(fld.field_tags_tid) as tids
-      FROM
-        {field_data_field_tags} fld
-      WHERE
-        fld.entity_id = :nid
-    ', array(':nid' => $nid));
-    foreach ($result as $record) {
-      if (!is_null($record->tids)) {
-        $row->setSourceProperty('tags', explode(',', $record->tids));
-      }
-    }
-
-    // Images.
-    $result = $this->getDatabase()->query('
-      SELECT
-        fld.field_image_fid,
-        fld.field_image_alt,
-        fld.field_image_title,
-        fld.field_image_width,
-        fld.field_image_height
-      FROM
-        {field_data_field_image} fld
-      WHERE
-        fld.entity_id = :nid
-    ', array(':nid' => $nid));
-    // Create an associative array for each row in the result. The keys
-    // here match the last part of the column name in the field table.
-    $images = [];
-    foreach ($result as $record) {
-      $images[] = [
-        'target_id' => $record->field_files_fid,
-        'alt'       => $record->field_image_alt,
-        'title'     => $record->field_image_title,
-        'width'     => $record->field_image_width,
-        'height'    => $record->field_image_height,
-      ];
-    }
-    $row->setSourceProperty('images', $images);
 
     return parent::prepareRow($row);
   }

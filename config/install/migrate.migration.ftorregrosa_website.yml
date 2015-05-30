@@ -1,0 +1,63 @@
+id: ftorregrosa_website
+label: ftorregrosa website nodes
+dependencies:
+  enforced:
+    module:
+      - migrate_ftorregrosa
+migration_groups:
+  - ftorregrosa
+source:
+  plugin: ftorregrosa_website
+destination:
+  plugin: entity:node
+  type: website
+  bundle: website
+migration_dependencies:
+  required:
+    - ftorregrosa_taxonomy_term
+process:
+#  nid: nid
+  vid: vid
+  type: type
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  title: title
+  uid:
+    -
+      plugin: migration
+      migration: ftorregrosa_user
+      source: uid
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  'body/value': body_value
+  'body/summary': body_summary
+  'body/format':
+    plugin: static_map
+    bypass: true
+    source: body_format
+    map:
+      1: plain_text
+      2: restricted_html
+      3: full_html
+      4: full_html
+  field_website_type:
+    -
+      plugin: migration
+      migration: ftorregrosa_taxonomy_term
+      source: field_website_type
+  field_website_technology:
+    -
+      plugin: migration
+      migration: ftorregrosa_taxonomy_term
+      source: field_website_technology
+  field_website_image: field_website_image
+
+#  field_website_link
+#  field_website_dev_date

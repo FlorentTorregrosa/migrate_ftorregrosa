@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\migrate_ftorregrosa\Plugin\migrate\source\Article.
+ * Contains \Drupal\migrate_ftorregrosa\Plugin\migrate\source\Book.
  */
 
 namespace Drupal\migrate_ftorregrosa\Plugin\migrate\source;
@@ -12,35 +12,44 @@ use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 
 /**
- * ftorregrosa article node source plugin.
+ * ftorregrosa book node source plugin.
  *
  * @MigrateSource(
- *   id = "ftorregrosa_article"
+ *   id = "ftorregrosa_book"
  * )
  */
-class Article extends DrupalSqlBase implements SourceEntityInterface {
+class Book extends DrupalSqlBase implements SourceEntityInterface {
 
   /**
    * {@inheritdoc}
    */
   public function query() {
     // This queries the built-in metadata, but not the body, tags, or images.
-    $query = $this->select('node', 'n')
-      ->condition('n.type', 'article')
-      ->fields('n', array(
-        'nid',
-        'vid',
-        'type',
-        'language',
-        'title',
-        'uid',
-        'status',
-        'created',
-        'changed',
-        'promote',
-        'sticky',
-      ));
-    $query->orderBy('nid');
+    $query = $this->select('book', 'b')
+      ->fields('b', array('nid', 'bid'));
+    $query->join('menu_links', 'ml', 'b.mlid = ml.mlid');
+    $query->join('node', 'n', 'b.nid = n.nid');
+    $ml_fields = array('mlid', 'plid', 'weight', 'has_children', 'depth');
+    for ($i = 1; $i <= 9; $i++) {
+      $field = "p$i";
+      $ml_fields[] = $field;
+      $query->orderBy($field);
+    }
+    $query->fields('ml', $ml_fields);
+    $query->fields('n', array(
+      'nid',
+      'vid',
+      'type',
+      'language',
+      'title',
+      'uid',
+      'status',
+      'created',
+      'changed',
+      'promote',
+      'sticky',
+    ));
+    $query->condition('n.type', 'book');
     return $query;
   }
 
@@ -94,33 +103,6 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
       }
     }
 
-    // Images.
-    $result = $this->getDatabase()->query('
-      SELECT
-        fld.field_image_fid,
-        fld.field_image_alt,
-        fld.field_image_title,
-        fld.field_image_width,
-        fld.field_image_height
-      FROM
-        {field_data_field_image} fld
-      WHERE
-        fld.entity_id = :nid
-    ', array(':nid' => $nid));
-    // Create an associative array for each row in the result. The keys
-    // here match the last part of the column name in the field table.
-    $images = [];
-    foreach ($result as $record) {
-      $images[] = [
-        'target_id' => $record->field_files_fid,
-        'alt'       => $record->field_image_alt,
-        'title'     => $record->field_image_title,
-        'width'     => $record->field_image_width,
-        'height'    => $record->field_image_height,
-      ];
-    }
-    $row->setSourceProperty('images', $images);
-
     return parent::prepareRow($row);
   }
 
@@ -128,8 +110,11 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
    * {@inheritdoc}
    */
   public function getIds() {
-    $ids['nid']['type'] = 'integer';
-    $ids['nid']['alias'] = 'n';
+//    $ids['nid']['type'] = 'integer';
+//    $ids['nid']['alias'] = 'n';
+
+    $ids['mlid']['type'] = 'integer';
+    $ids['mlid']['alias'] = 'ml';
     return $ids;
   }
 
@@ -168,6 +153,20 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
       'promote'  => $this->t('Promoted to front page'),
       'sticky'   => $this->t('Sticky at top of lists'),
       'language' => $this->t('Language (fr, en, ...)'),
+
+      'bid' => $this->t('Book ID'),
+      'mlid' => $this->t('Menu link ID'),
+      'plid' => $this->t('Parent link ID'),
+      'weight' => $this->t('Weight'),
+      'p1' => $this->t('The first mlid in the materialized path.'),
+      'p2' => $this->t('The second mlid in the materialized path.'),
+      'p3' => $this->t('The third mlid in the materialized path.'),
+      'p4' => $this->t('The fourth mlid in the materialized path.'),
+      'p5' => $this->t('The fifth mlid in the materialized path.'),
+      'p6' => $this->t('The sixth mlid in the materialized path.'),
+      'p7' => $this->t('The seventh mlid in the materialized path.'),
+      'p8' => $this->t('The eight mlid in the materialized path.'),
+      'p9' => $this->t('The nine mlid in the materialized path.'),
     );
     return $fields;
   }

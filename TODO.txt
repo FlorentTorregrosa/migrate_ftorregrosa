@@ -1,8 +1,13 @@
 Content types:
  - Article:
-  - Fix image
+  - image
+  - attachment
  - Page
+  - attachment
  - Website
+  - image
+  - link
+  - date
  - Book
 Commentaries
 Contributed files
