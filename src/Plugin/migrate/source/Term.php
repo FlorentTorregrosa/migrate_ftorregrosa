@@ -13,8 +13,6 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 /**
  * ftorregrosa taxonomy terms source from database.
  *
- * @todo: support term_relation, term_synonym table if possible.
- *
  * @MigrateSource(
  *   id = "ftorregrosa_taxonomy_term",
  *   source_provider = "taxonomy"

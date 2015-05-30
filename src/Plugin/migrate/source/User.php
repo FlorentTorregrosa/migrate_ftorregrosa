@@ -7,7 +7,6 @@
 namespace Drupal\migrate_ftorregrosa\Plugin\migrate\source;
 
 use Drupal\migrate\Plugin\SourceEntityInterface;
-use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 
 /**
@@ -33,60 +32,7 @@ class User extends DrupalSqlBase implements SourceEntityInterface {
    */
   public function fields() {
     $fields = $this->baseFields();
-//    $fields['first_name'] = $this->t('First Name');
-//    $fields['last_name'] = $this->t('Last Name');
-//    $fields['biography'] = $this->t('Biography');
     return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row) {
-//    $uid = $row->getSourceProperty('uid');
-//
-//    // first_name
-//    $result = $this->getDatabase()->query('
-//      SELECT
-//        fld.field_first_name_value
-//      FROM
-//        {field_data_field_first_name} fld
-//      WHERE
-//        fld.entity_id = :uid
-//    ', array(':uid' => $uid));
-//    foreach ($result as $record) {
-//      $row->setSourceProperty('first_name', $record->field_first_name_value );
-//    }
-//
-//    // last_name
-//    $result = $this->getDatabase()->query('
-//      SELECT
-//        fld.field_last_name_value
-//      FROM
-//        {field_data_field_last_name} fld
-//      WHERE
-//        fld.entity_id = :uid
-//    ', array(':uid' => $uid));
-//    foreach ($result as $record) {
-//      $row->setSourceProperty('last_name', $record->field_last_name_value );
-//    }
-//
-//    // biography
-//    $result = $this->getDatabase()->query('
-//      SELECT
-//        fld.field_biography_value,
-//        fld.field_biography_format
-//      FROM
-//        {field_data_field_biography} fld
-//      WHERE
-//        fld.entity_id = :uid
-//    ', array(':uid' => $uid));
-//    foreach ($result as $record) {
-//      $row->setSourceProperty('biography_value', $record->field_biography_value );
-//      $row->setSourceProperty('biography_format', $record->field_biography_format );
-//    }
-
-    return parent::prepareRow($row);
   }
 
   /**
