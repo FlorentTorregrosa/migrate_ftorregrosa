@@ -1,7 +1,5 @@
 Content types:
  - Article:
-  - Fix body
-  - Fix tags
   - Fix image
   - Fix destination id
  - Page

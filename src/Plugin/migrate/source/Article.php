@@ -49,9 +49,9 @@ class Article extends DrupalSqlBase implements SourceEntityInterface {
    */
   public function fields() {
     $fields = $this->baseFields();
-    $fields['body/format'] = $this->t('Format of body');
-    $fields['body/value'] = $this->t('Full text of body');
-    $fields['body/summary'] = $this->t('Summary of body');
+    $fields['body_value'] = $this->t('Full text of body');
+    $fields['body_summary'] = $this->t('Summary of body');
+    $fields['body_format'] = $this->t('Format of body');
     return $fields;
   }
 

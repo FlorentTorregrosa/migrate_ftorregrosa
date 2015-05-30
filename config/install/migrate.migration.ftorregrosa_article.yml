@@ -36,6 +36,8 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
+  'body/value': body_value
+  'body/summary': body_summary
   'body/format':
     plugin: static_map
     bypass: true
@@ -45,21 +47,6 @@ process:
       2: restricted_html
       3: full_html
       4: full_html
-  'body/value': body_value
-#  'body:value':
-#    -
-#      plugin: get
-#      source: body_value
-#    -
-#      plugin: default_value
-#      default_value: 'toto'
-#  'body\summary':
-#    -
-#      plugin: get
-#      source: body_summary
-#    -
-#      plugin: default_value
-#      default_value: 'toto'
   field_tags:
     -
       plugin: migration
