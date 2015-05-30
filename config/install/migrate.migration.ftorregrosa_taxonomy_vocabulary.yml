@@ -15,11 +15,11 @@ process:
     -
       plugin: machine_name
       source: machine_name
-    -
-      plugin: dedupe_entity
-      entity_type: taxonomy_vocabulary
-      field: vid
-      length: 32
+#    -
+#      plugin: dedupe_entity
+#      entity_type: taxonomy_vocabulary
+#      field: vid
+#      length: 32
   label: name
   name: name
   description: description
