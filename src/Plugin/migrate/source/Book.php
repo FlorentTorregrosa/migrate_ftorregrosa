@@ -69,6 +69,7 @@ class Book extends DrupalSqlBase implements SourceEntityInterface {
    */
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
+    $plid = $row->getSourceProperty('plid');
 
     // Body (compound field with value, summary, and format).
     $result = $this->getDatabase()->query('
@@ -103,6 +104,27 @@ class Book extends DrupalSqlBase implements SourceEntityInterface {
       }
     }
 
+    // Parent nid.
+    $pid = 0;
+    $result = $this->getDatabase()->query('
+      SELECT
+        b.nid as pid
+      FROM
+        {menu_links} ml
+      LEFT JOIN {book} b
+        ON (b.mlid = ml.plid)
+      WHERE
+        ml.plid = :plid
+        AND
+        ml.plid != 0
+    ', array(':plid' => $plid));
+    foreach ($result as $record) {
+      if (!is_null($record->pid)) {
+        $pid = $record->pid;
+      }
+    }
+    $row->setSourceProperty('pid', $pid);
+
     return parent::prepareRow($row);
   }
 
@@ -110,11 +132,8 @@ class Book extends DrupalSqlBase implements SourceEntityInterface {
    * {@inheritdoc}
    */
   public function getIds() {
-//    $ids['nid']['type'] = 'integer';
-//    $ids['nid']['alias'] = 'n';
-
-    $ids['mlid']['type'] = 'integer';
-    $ids['mlid']['alias'] = 'ml';
+    $ids['nid']['type'] = 'integer';
+    $ids['nid']['alias'] = 'n';
     return $ids;
   }
 
