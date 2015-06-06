@@ -58,6 +58,6 @@ process:
       migration: ftorregrosa_taxonomy_term
       source: field_website_technology
   field_website_image: field_website_image
-
-#  field_website_link
-#  field_website_dev_date
+  field_website_dev_date_start: field_website_dev_date_start
+  field_website_dev_date_end: field_website_dev_date_end
+  field_website_link: field_website_link

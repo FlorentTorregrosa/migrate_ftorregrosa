@@ -110,9 +110,43 @@ class Website extends DrupalSqlBase implements SourceEntityInterface {
       }
     }
 
-//    field_website_link
+    // field_website_link.
+    $result = $this->getDatabase()->query('
+      SELECT
+        fld.field_website_link_url,
+        fld.field_website_link_title
+      FROM
+        {field_data_field_website_link} fld
+      WHERE
+        fld.entity_id = :nid
+    ', array(':nid' => $nid));
+    // Create an associative array for each row in the result. The keys
+    // here match the last part of the column name in the field table.
+    $links = [];
+    foreach ($result as $record) {
+      $links[] = [
+        'uri'   => $record->field_website_link_url,
+        'title' => $record->field_website_link_title,
+      ];
+    }
+    $row->setSourceProperty('field_website_link', $links);
 
-//    field_website_dev_date
+    // field_website_dev_date.
+    $result = $this->getDatabase()->query('
+      SELECT
+        fld.field_website_dev_date_value,
+        fld.field_website_dev_date_value2
+      FROM
+        {field_data_field_website_dev_date} fld
+      WHERE
+        fld.entity_id = :nid
+    ', array(':nid' => $nid));
+    // Create an associative array for each row in the result. The keys
+    // here match the last part of the column name in the field table.
+    foreach ($result as $record) {
+      $row->setSourceProperty('field_website_dev_date_start', substr($record->field_website_dev_date_value, 0, 10));
+      $row->setSourceProperty('field_website_dev_date_end', substr($record->field_website_dev_date_value2, 0, 10));
+    }
 
     // Images.
     $result = $this->getDatabase()->query('

@@ -6,8 +6,6 @@ Content types:
   - attachment
  - Website
   - image
-  - link
-  - date
  - Book
 Commentaries
 Contributed files
