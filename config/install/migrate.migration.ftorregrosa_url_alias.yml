@@ -1,0 +1,20 @@
+id: ftorregrosa_url_alias
+label: ftorregrosa URL aliases
+migration_groups:
+  - ftorregrosa
+source:
+  plugin: ftorregrosa_url_alias
+destination:
+  plugin: url_alias
+migration_dependencies:
+  required:
+    - ftorregrosa_taxonomy_term
+    - ftorregrosa_article
+    - ftorregrosa_book
+    - ftorregrosa_page
+    - ftorregrosa_website
+    - ftorregrosa_user
+process:
+  source: source
+  alias: alias
+  langcode: language
