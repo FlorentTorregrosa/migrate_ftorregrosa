@@ -7,8 +7,6 @@ Content types:
  - Website
   - image
  - Book
- - Website
 Contributed files
 User:
- - Cas username
  - Password
