@@ -7,7 +7,6 @@ Content types:
  - Website
   - image
  - Book
-Commentaries
 Contributed files
 User:
  - Cas username

@@ -1,0 +1,52 @@
+id: ftorregrosa_comment
+label: ftorregrosa comments
+migration_groups:
+  - ftorregrosa
+source:
+  plugin: ftorregrosa_comment
+  constants:
+    entity_type: node
+destination:
+  plugin: entity:comment
+migration_dependencies:
+  required:
+    - ftorregrosa_article
+    - ftorregrosa_book
+    - ftorregrosa_user
+process:
+#  cid: cid
+  pid:
+    plugin: migration
+    migration: ftorregrosa_comment
+    source: pid
+  entity_id: nid
+  entity_type: 'constants/entity_type'
+  field_name:
+    plugin: default_value
+    default_value: comment
+  comment_type:
+    plugin: default_value
+    default_value: comment
+  subject: subject
+  uid:
+    plugin: migration
+    migration: ftorregrosa_user
+    source: uid
+  name: name
+  mail: mail
+  homepage: homepage
+  hostname: hostname
+  created: created
+  changed: changed
+  status: status
+  thread: thread
+  'comment_body/value': body_value
+  'comment_body/format':
+    plugin: static_map
+    bypass: true
+    source: body_format
+    map:
+      1: plain_text
+      2: restricted_html
+      3: full_html
+      4: full_html
