@@ -111,7 +111,8 @@ class UrlAlias extends DrupalSqlBase {
    *   The tid in the source database.
    */
   public function getNewTid($tid) {
-    return db_select('migrate_map_ftorregrosa_taxonomy_term')
+    return $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+      ->select('migrate_map_ftorregrosa_taxonomy_term')
       ->fields('migrate_map_ftorregrosa_taxonomy_term', array('destid1'))
       ->condition('sourceid1', $tid)
       ->execute()
@@ -127,7 +128,8 @@ class UrlAlias extends DrupalSqlBase {
    *   The uid in the source database.
    */
   public function getNewUid($uid) {
-    return db_select('migrate_map_ftorregrosa_user')
+    return $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+      ->select('migrate_map_ftorregrosa_user')
       ->fields('migrate_map_ftorregrosa_user', array('destid1'))
       ->condition('sourceid1', $uid)
       ->execute()
@@ -158,7 +160,8 @@ class UrlAlias extends DrupalSqlBase {
     }
 
     // Get the new nid.
-    return db_select('migrate_map_ftorregrosa_' . $type)
+    return $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+      ->select('migrate_map_ftorregrosa_' . $type)
       ->fields('migrate_map_ftorregrosa_' . $type, array('destid1'))
       ->condition('sourceid1', $nid)
       ->execute()

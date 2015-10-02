@@ -56,7 +56,8 @@ class Comment extends DrupalSqlBase {
     $type = $row->getSourceProperty('type');
 
     // Get the new nid.
-    $new_nid = db_select('migrate_map_ftorregrosa_' . $type)
+    $new_nid = $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+      ->select('migrate_map_ftorregrosa_' . $type)
       ->fields('migrate_map_ftorregrosa_' . $type, array('destid1'))
       ->condition('sourceid1', $previous_nid)
       ->execute()
