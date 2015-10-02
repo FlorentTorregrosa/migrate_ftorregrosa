@@ -3,6 +3,8 @@ label: ftorregrosa URL aliases
 migration_group: ftorregrosa
 source:
   plugin: ftorregrosa_url_alias
+  constants:
+    slash: '/'
 destination:
   plugin: url_alias
 migration_dependencies:
@@ -14,6 +16,14 @@ migration_dependencies:
     - ftorregrosa_website
     - ftorregrosa_user
 process:
-  source: source
-  alias: alias
+  source:
+    plugin: concat
+    source:
+      - constants/slash
+      - source
+  alias:
+    plugin: concat
+    source:
+      - constants/slash
+      - alias
   langcode: language
