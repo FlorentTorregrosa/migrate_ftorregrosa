@@ -1,7 +1,6 @@
 id: ftorregrosa_url_alias
 label: ftorregrosa URL aliases
-migration_groups:
-  - ftorregrosa
+migration_group: ftorregrosa
 source:
   plugin: ftorregrosa_url_alias
 destination:

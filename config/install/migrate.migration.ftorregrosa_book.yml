@@ -5,8 +5,7 @@ dependencies:
     module:
       - book
       - migrate_ftorregrosa
-migration_groups:
-  - ftorregrosa
+migration_group: ftorregrosa
 source:
   plugin: ftorregrosa_book
 destination:

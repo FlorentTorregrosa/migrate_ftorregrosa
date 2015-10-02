@@ -1,7 +1,6 @@
 id: ftorregrosa_comment
 label: ftorregrosa comments
-migration_groups:
-  - ftorregrosa
+migration_group: ftorregrosa
 source:
   plugin: ftorregrosa_comment
   constants:

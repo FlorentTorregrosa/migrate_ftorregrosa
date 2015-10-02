@@ -4,8 +4,7 @@ dependencies:
   enforced:
     module:
       - migrate_ftorregrosa
-migration_groups:
-  - ftorregrosa
+migration_group: ftorregrosa
 source:
   plugin: ftorregrosa_page
 destination:
