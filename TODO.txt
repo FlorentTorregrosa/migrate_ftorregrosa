@@ -8,5 +8,6 @@ Content types:
   - image
  - Book
 Contributed files
+links in RTE
 User:
  - Password

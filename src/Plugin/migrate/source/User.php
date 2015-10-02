@@ -6,7 +6,6 @@
 
 namespace Drupal\migrate_ftorregrosa\Plugin\migrate\source;
 
-use Drupal\migrate\Plugin\SourceEntityInterface;
 use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 
 /**
@@ -16,7 +15,7 @@ use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
  *   id = "ftorregrosa_user"
  * )
  */
-class User extends DrupalSqlBase implements SourceEntityInterface {
+class User extends DrupalSqlBase {
 
   /**
    * {@inheritdoc}
