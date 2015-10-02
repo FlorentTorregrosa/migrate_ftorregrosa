@@ -3,6 +3,7 @@ label: ftorregrosa page nodes
 dependencies:
   enforced:
     module:
+      - language
       - migrate_ftorregrosa
 migration_group: ftorregrosa
 source:
@@ -11,6 +12,9 @@ destination:
   plugin: entity:node
   type: page
   bundle: page
+migration_dependencies:
+  required:
+    - ftorregrosa_user
 process:
 #  nid: nid
   vid: vid

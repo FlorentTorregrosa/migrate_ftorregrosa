@@ -1,5 +1,11 @@
 id: ftorregrosa_comment
 label: ftorregrosa comments
+dependencies:
+  enforced:
+    module:
+      - comment
+      - language
+      - migrate_ftorregrosa
 migration_group: ftorregrosa
 source:
   plugin: ftorregrosa_comment

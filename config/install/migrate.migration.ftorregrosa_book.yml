@@ -4,6 +4,7 @@ dependencies:
   enforced:
     module:
       - book
+      - language
       - migrate_ftorregrosa
 migration_group: ftorregrosa
 source:
@@ -13,6 +14,7 @@ destination:
 migration_dependencies:
   required:
     - ftorregrosa_taxonomy_term
+    - ftorregrosa_user
 process:
 #  nid: nid
   vid: vid
