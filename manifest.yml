@@ -1,5 +1,6 @@
 # No more use manifest.yml, use bin/migrate_import.sh.
 - ftorregrosa_user
+- ftorregrosa_file
 - ftorregrosa_taxonomy_vocabulary
 - ftorregrosa_taxonomy_term
 - ftorregrosa_article

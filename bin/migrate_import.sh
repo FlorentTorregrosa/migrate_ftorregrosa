@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 drush migrate-import ftorregrosa_user
+# Files must be copied from Drupal 7 to the Drupal 8 files directory.
+drush migrate-import ftorregrosa_file
 drush migrate-import ftorregrosa_taxonomy_vocabulary
 drush migrate-import ftorregrosa_taxonomy_term
 drush migrate-import ftorregrosa_article

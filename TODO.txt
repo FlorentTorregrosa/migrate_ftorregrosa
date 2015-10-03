@@ -6,7 +6,6 @@ Content types:
   - attachment
  - Website
   - image
-Contributed files
 links in RTE
 User:
  - Password
