@@ -105,21 +105,24 @@ class Book extends DrupalSqlBase {
 
     // Parent nid.
     $pid = 0;
-    $result = $this->getDatabase()->query('
-      SELECT
-        b.nid as pid
-      FROM
-        {menu_links} ml
-      LEFT JOIN {book} b
-        ON (b.mlid = ml.plid)
-      WHERE
-        ml.plid = :plid
-        AND
-        ml.plid != 0
-    ', array(':plid' => $plid));
-    foreach ($result as $record) {
-      if (!is_null($record->pid)) {
-        $pid = $record->pid;
+    // If node is the book root. plid = 0 and migrated_pid must be 0.
+    if ($plid != 0) {
+      $result = $this->getDatabase()->query('
+        SELECT
+          b.nid as pid
+        FROM
+          {menu_links} ml
+        LEFT JOIN {book} b
+          ON (b.mlid = ml.plid)
+        WHERE
+          ml.plid = :plid
+          AND
+          ml.plid != 0
+      ', array(':plid' => $plid));
+      foreach ($result as $record) {
+        if (!is_null($record->pid)) {
+          $pid = $record->pid;
+        }
       }
     }
     $row->setSourceProperty('pid', $pid);

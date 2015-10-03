@@ -10,7 +10,7 @@ migration_group: ftorregrosa
 source:
   plugin: ftorregrosa_book
 destination:
-  plugin: ftorregrosa_book
+  plugin: book
 migration_dependencies:
   required:
     - ftorregrosa_taxonomy_term
