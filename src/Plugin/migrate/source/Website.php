@@ -150,15 +150,22 @@ class Website extends DrupalSqlBase {
     }
 
     // Images.
+    // Site using file_entity:
+    // alt text => field_data_field_file_image_alt_text
+    // title text => field_data_field_file_image_title_text
     $result = $this->getDatabase()->query('
       SELECT
         fdfwi.field_website_image_fid,
-        fdfwi.field_website_image_alt,
-        fdfwi.field_website_image_title,
+        fdffiat.field_file_image_alt_text_value,
+        fdffitt.field_file_image_title_text_value,
         fdfwi.field_website_image_width,
         fdfwi.field_website_image_height
       FROM
         {field_data_field_website_image} fdfwi
+      LEFT JOIN {field_data_field_file_image_alt_text} fdffiat
+        ON (fdffiat.entity_id = fdfwi.field_website_image_fid)
+      LEFT JOIN {field_data_field_file_image_title_text} fdffitt
+        ON (fdffitt.entity_id = fdfwi.field_website_image_fid)
       WHERE
         fdfwi.entity_id = :nid
     ', array(':nid' => $nid));
@@ -166,13 +173,24 @@ class Website extends DrupalSqlBase {
     // here match the last part of the column name in the field table.
     $images = [];
     foreach ($result as $record) {
-      $images[] = [
-        'target_id' => $record->field_files_fid,
-        'alt'       => $record->field_image_alt,
-        'title'     => $record->field_image_title,
-        'width'     => $record->field_image_width,
-        'height'    => $record->field_image_height,
-      ];
+      // Retrieve the migrated fid from ftorregrosa_file migration.
+      $migrated_fid = $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+        ->select('migrate_map_ftorregrosa_file')
+        ->fields('migrate_map_ftorregrosa_file', array('destid1'))
+        ->condition('sourceid1', $record->field_website_image_fid)
+        ->execute()
+        ->fetchField();
+
+      // Skip file if not migrated yet.
+      if (!is_null($migrated_fid)) {
+        $images[] = [
+          'target_id' => $migrated_fid,
+          'alt'       => $record->field_file_image_alt_text_value,
+          'title'     => $record->field_file_image_title_text_value,
+          'width'     => $record->field_website_image_width,
+          'height'    => $record->field_website_image_height,
+        ];
+      }
     }
     $row->setSourceProperty('field_website_image', $images);
 

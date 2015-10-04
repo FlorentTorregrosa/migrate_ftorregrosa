@@ -4,8 +4,6 @@ Content types:
   - attachment
  - Page
   - attachment
- - Website
-  - image
 links in RTE
 User:
  - Password
