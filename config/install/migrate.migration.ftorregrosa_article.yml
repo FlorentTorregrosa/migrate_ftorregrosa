@@ -54,3 +54,4 @@ process:
       migration: ftorregrosa_taxonomy_term
       source: tags
   field_image: images
+  field_attachment: attachments

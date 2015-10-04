@@ -1,9 +1,3 @@
-Content types:
- - Article:
-  - image
-  - attachment
- - Page
-  - attachment
 links in RTE
 User:
  - Password

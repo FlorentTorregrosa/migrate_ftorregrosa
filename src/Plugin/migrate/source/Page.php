@@ -77,6 +77,40 @@ class Page extends DrupalSqlBase {
       $row->setSourceProperty('body_format', $record->body_format);
     }
 
+    // Attachments.
+    $result = $this->getDatabase()->query('
+      SELECT
+        fdfa.field_attachment_fid,
+        fdfa.field_attachment_display,
+        fdfa.field_attachment_description
+      FROM
+        {field_data_field_attachment} fdfa
+      WHERE
+        fdfa.entity_id = :nid
+    ', array(':nid' => $nid));
+    // Create an associative array for each row in the result. The keys
+    // here match the last part of the column name in the field table.
+    $attachments = [];
+    foreach ($result as $record) {
+      // Retrieve the migrated fid from ftorregrosa_file migration.
+      $migrated_fid = $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+        ->select('migrate_map_ftorregrosa_file')
+        ->fields('migrate_map_ftorregrosa_file', array('destid1'))
+        ->condition('sourceid1', $record->field_attachment_fid)
+        ->execute()
+        ->fetchField();
+
+      // Skip file if not migrated yet.
+      if (!is_null($migrated_fid)) {
+        $attachments[] = [
+          'target_id'   => $migrated_fid,
+          'display'     => $record->field_attachment_display,
+          'description' => $record->field_attachment_description,
+        ];
+      }
+    }
+    $row->setSourceProperty('attachments', $attachments);
+
     return parent::prepareRow($row);
   }
 

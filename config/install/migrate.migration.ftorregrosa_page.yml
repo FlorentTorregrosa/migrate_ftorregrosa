@@ -47,3 +47,4 @@ process:
       2: restricted_html
       3: full_html
       4: full_html
+  field_attachment: attachments

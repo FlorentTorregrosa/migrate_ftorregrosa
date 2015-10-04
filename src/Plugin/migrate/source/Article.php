@@ -94,15 +94,22 @@ class Article extends DrupalSqlBase {
     }
 
     // Images.
+    // Site using file_entity:
+    // alt text => field_data_field_file_image_alt_text
+    // title text => field_data_field_file_image_title_text
     $result = $this->getDatabase()->query('
       SELECT
         fdfi.field_image_fid,
-        fdfi.field_image_alt,
-        fdfi.field_image_title,
+        fdffiat.field_file_image_alt_text_value,
+        fdffitt.field_file_image_title_text_value,
         fdfi.field_image_width,
         fdfi.field_image_height
       FROM
         {field_data_field_image} fdfi
+      LEFT JOIN {field_data_field_file_image_alt_text} fdffiat
+        ON (fdffiat.entity_id = fdfi.field_image_fid)
+      LEFT JOIN {field_data_field_file_image_title_text} fdffitt
+        ON (fdffitt.entity_id = fdfi.field_image_fid)
       WHERE
         fdfi.entity_id = :nid
     ', array(':nid' => $nid));
@@ -110,15 +117,60 @@ class Article extends DrupalSqlBase {
     // here match the last part of the column name in the field table.
     $images = [];
     foreach ($result as $record) {
-      $images[] = [
-        'target_id' => $record->field_files_fid,
-        'alt'       => $record->field_image_alt,
-        'title'     => $record->field_image_title,
-        'width'     => $record->field_image_width,
-        'height'    => $record->field_image_height,
-      ];
+      // Retrieve the migrated fid from ftorregrosa_file migration.
+      $migrated_fid = $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+        ->select('migrate_map_ftorregrosa_file')
+        ->fields('migrate_map_ftorregrosa_file', array('destid1'))
+        ->condition('sourceid1', $record->field_image_fid)
+        ->execute()
+        ->fetchField();
+
+      // Skip file if not migrated yet.
+      if (!is_null($migrated_fid)) {
+        $images[] = [
+          'target_id' => $migrated_fid,
+          'alt'       => $record->field_file_image_alt_text_value,
+          'title'     => $record->field_file_image_title_text_value,
+          'width'     => $record->field_image_width,
+          'height'    => $record->field_image_height,
+        ];
+      }
     }
     $row->setSourceProperty('images', $images);
+
+    // Attachments.
+    $result = $this->getDatabase()->query('
+      SELECT
+        fdfa.field_attachment_fid,
+        fdfa.field_attachment_display,
+        fdfa.field_attachment_description
+      FROM
+        {field_data_field_attachment} fdfa
+      WHERE
+        fdfa.entity_id = :nid
+    ', array(':nid' => $nid));
+    // Create an associative array for each row in the result. The keys
+    // here match the last part of the column name in the field table.
+    $attachments = [];
+    foreach ($result as $record) {
+      // Retrieve the migrated fid from ftorregrosa_file migration.
+      $migrated_fid = $this->setUpDatabase(array('key' =>'default', 'target' => 'default'))
+        ->select('migrate_map_ftorregrosa_file')
+        ->fields('migrate_map_ftorregrosa_file', array('destid1'))
+        ->condition('sourceid1', $record->field_attachment_fid)
+        ->execute()
+        ->fetchField();
+
+      // Skip file if not migrated yet.
+      if (!is_null($migrated_fid)) {
+        $attachments[] = [
+          'target_id'   => $migrated_fid,
+          'display'     => $record->field_attachment_display,
+          'description' => $record->field_attachment_description,
+        ];
+      }
+    }
+    $row->setSourceProperty('attachments', $attachments);
 
     return parent::prepareRow($row);
   }
