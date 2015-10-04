@@ -63,13 +63,13 @@ class Website extends DrupalSqlBase {
     // Body (compound field with value, summary, and format).
     $result = $this->getDatabase()->query('
       SELECT
-        fld.body_value,
-        fld.body_summary,
-        fld.body_format
+        fdb.body_value,
+        fdb.body_summary,
+        fdb.body_format
       FROM
-        {field_data_body} fld
+        {field_data_body} fdb
       WHERE
-        fld.entity_id = :nid
+        fdb.entity_id = :nid
     ', array(':nid' => $nid));
     foreach ($result as $record) {
       $row->setSourceProperty('body_value', $record->body_value);
@@ -81,11 +81,11 @@ class Website extends DrupalSqlBase {
     // all values into one row.)
     $result = $this->getDatabase()->query('
       SELECT
-        GROUP_CONCAT(fld.field_website_type_tid) as tids
+        GROUP_CONCAT(fdfwt.field_website_type_tid) as tids
       FROM
-        {field_data_field_website_type} fld
+        {field_data_field_website_type} fdfwt
       WHERE
-        fld.entity_id = :nid
+        fdfwt.entity_id = :nid
     ', array(':nid' => $nid));
     foreach ($result as $record) {
       if (!is_null($record->tids)) {
@@ -97,11 +97,11 @@ class Website extends DrupalSqlBase {
     // all values into one row.)
     $result = $this->getDatabase()->query('
       SELECT
-        GROUP_CONCAT(fld.field_website_technology_tid) as tids
+        GROUP_CONCAT(fdfwt.field_website_technology_tid) as tids
       FROM
-        {field_data_field_website_technology} fld
+        {field_data_field_website_technology} fdfwt
       WHERE
-        fld.entity_id = :nid
+        fdfwt.entity_id = :nid
     ', array(':nid' => $nid));
     foreach ($result as $record) {
       if (!is_null($record->tids)) {
@@ -112,12 +112,12 @@ class Website extends DrupalSqlBase {
     // field_website_link.
     $result = $this->getDatabase()->query('
       SELECT
-        fld.field_website_link_url,
-        fld.field_website_link_title
+        fdfwl.field_website_link_url,
+        fdfwl.field_website_link_title
       FROM
-        {field_data_field_website_link} fld
+        {field_data_field_website_link} fdfwl
       WHERE
-        fld.entity_id = :nid
+        fdfwl.entity_id = :nid
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.
@@ -133,12 +133,12 @@ class Website extends DrupalSqlBase {
     // field_website_dev_date.
     $result = $this->getDatabase()->query('
       SELECT
-        fld.field_website_dev_date_value,
-        fld.field_website_dev_date_value2
+        fdfwdd.field_website_dev_date_value,
+        fdfwdd.field_website_dev_date_value2
       FROM
-        {field_data_field_website_dev_date} fld
+        {field_data_field_website_dev_date} fdfwdd
       WHERE
-        fld.entity_id = :nid
+        fdfwdd.entity_id = :nid
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.
@@ -150,15 +150,15 @@ class Website extends DrupalSqlBase {
     // Images.
     $result = $this->getDatabase()->query('
       SELECT
-        fld.field_website_image_fid,
-        fld.field_website_image_alt,
-        fld.field_website_image_title,
-        fld.field_website_image_width,
-        fld.field_website_image_height
+        fdfwi.field_website_image_fid,
+        fdfwi.field_website_image_alt,
+        fdfwi.field_website_image_title,
+        fdfwi.field_website_image_width,
+        fdfwi.field_website_image_height
       FROM
-        {field_data_field_website_image} fld
+        {field_data_field_website_image} fdfwi
       WHERE
-        fld.entity_id = :nid
+        fdfwi.entity_id = :nid
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.

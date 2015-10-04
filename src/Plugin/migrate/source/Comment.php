@@ -74,12 +74,12 @@ class Comment extends DrupalSqlBase {
     // Body (compound field with value, summary, and format).
     $result = $this->getDatabase()->query('
       SELECT
-        fld.comment_body_value,
-        fld.comment_body_format
+        fdcb.comment_body_value,
+        fdcb.comment_body_format
       FROM
-        {field_data_comment_body} fld
+        {field_data_comment_body} fdcb
       WHERE
-        fld.entity_id = :cid
+        fdcb.entity_id = :cid
     ', array(':cid' => $cid));
     foreach ($result as $record) {
       $row->setSourceProperty('body_value', $record->comment_body_value);

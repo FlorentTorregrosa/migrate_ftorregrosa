@@ -63,13 +63,13 @@ class Page extends DrupalSqlBase {
     // Body (compound field with value, summary, and format).
     $result = $this->getDatabase()->query('
       SELECT
-        fld.body_value,
-        fld.body_summary,
-        fld.body_format
+        fdb.body_value,
+        fdb.body_summary,
+        fdb.body_format
       FROM
-        {field_data_body} fld
+        {field_data_body} fdb
       WHERE
-        fld.entity_id = :nid
+        fdb.entity_id = :nid
     ', array(':nid' => $nid));
     foreach ($result as $record) {
       $row->setSourceProperty('body_value', $record->body_value);
