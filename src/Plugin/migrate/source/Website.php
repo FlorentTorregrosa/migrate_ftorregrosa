@@ -142,6 +142,8 @@ class Website extends DrupalSqlBase {
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.
+    // Source: yyyy-MM-dd HH:mm:ss (where HH:mm:ss equals 00:00:00)
+    // Target: yyyy-MM-dd
     foreach ($result as $record) {
       $row->setSourceProperty('field_website_dev_date_start', substr($record->field_website_dev_date_value, 0, 10));
       $row->setSourceProperty('field_website_dev_date_end', substr($record->field_website_dev_date_value2, 0, 10));
