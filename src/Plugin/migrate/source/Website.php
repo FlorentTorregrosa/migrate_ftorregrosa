@@ -118,6 +118,8 @@ class Website extends DrupalSqlBase {
         {field_data_field_website_link} fdfwl
       WHERE
         fdfwl.entity_id = :nid
+      ORDER BY
+        fdfwl.delta ASC
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.
@@ -168,6 +170,8 @@ class Website extends DrupalSqlBase {
         ON (fdffitt.entity_id = fdfwi.field_website_image_fid)
       WHERE
         fdfwi.entity_id = :nid
+      ORDER BY
+        fdfwi.delta ASC
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.

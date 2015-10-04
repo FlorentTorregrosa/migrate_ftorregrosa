@@ -112,6 +112,8 @@ class Article extends DrupalSqlBase {
         ON (fdffitt.entity_id = fdfi.field_image_fid)
       WHERE
         fdfi.entity_id = :nid
+      ORDER BY
+        fdfi.delta ASC
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.
@@ -148,6 +150,8 @@ class Article extends DrupalSqlBase {
         {field_data_field_attachment} fdfa
       WHERE
         fdfa.entity_id = :nid
+      ORDER BY
+        fdfa.delta ASC
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.

@@ -87,6 +87,8 @@ class Page extends DrupalSqlBase {
         {field_data_field_attachment} fdfa
       WHERE
         fdfa.entity_id = :nid
+      ORDER BY
+        fdfa.delta ASC
     ', array(':nid' => $nid));
     // Create an associative array for each row in the result. The keys
     // here match the last part of the column name in the field table.
